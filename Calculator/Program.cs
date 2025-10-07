@@ -7,11 +7,10 @@ class Program
         double operand1;
         double operand2;
         string operation;
-        double? result = null;
         bool isWork = true;
         ICalculator calculator = new Calculator();
         while (isWork)
-        { 
+        {
             Console.WriteLine("Input a number 1: ");
             if (!double.TryParse(Console.ReadLine(), out operand1))
             { 
@@ -20,7 +19,7 @@ class Program
             }
             
             Console.WriteLine("Input operation: "); 
-            operation = Console.ReadLine(); 
+            operation = Console.ReadLine();
             Console.WriteLine("Input a number 2: "); 
             if (!double.TryParse(Console.ReadLine(), out operand2)) 
             { 
@@ -28,30 +27,17 @@ class Program
                 continue;
             }
 
-            switch (operation) 
-            { 
-                case "+": 
-                    result = calculator.Calculate(operand1, operand2, (op1, op2) => op1 + op2); 
-                    break;
-                case "-": 
-                    result = calculator.Calculate(operand1, operand2, (op1, op2) => op1 - op2); 
-                    break;
-                case "*": 
-                    result = calculator.Calculate(operand1, operand2, (op1, op2) => op1 * op2); 
-                    break;
-                case "/":
-                    if (operand2 == 0)
-                    {
-                        Console.WriteLine("Division by zero!");
-                        continue;
-                    }
-                    result = calculator.Calculate(operand1, operand2, (op1, op2) => op1 / op2); 
-                    break;
-                default: 
-                    Console.WriteLine("Choice valid operations: +, -, *, /"); 
-                    continue;
+            if (!calculator.IsSupportedOperation(operation))
+            {
+                Console.WriteLine("Invalid input for operation! Choose: +, -, *, /");
+                continue;
             }
-            Console.WriteLine($"Answer: {result}"); 
+            if (operation == "/" && operand2 == 0)
+            {
+                Console.WriteLine("Division by zero!");
+                continue;
+            }
+            Console.WriteLine($"Answer: {calculator.Calculate(operand1, operand2, calculator.DefineOperation(operation))}"); 
             Console.WriteLine("Continue? (Y/N): "); 
             isWork = Console.ReadKey().Key == ConsoleKey.Y ? true : false; 
             Console.Clear();
