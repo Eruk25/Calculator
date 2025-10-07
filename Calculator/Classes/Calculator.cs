@@ -16,7 +16,12 @@ public class Calculator : ICalculator
             "+" => (op1, op2) => op1 + op2,
             "-" => (op1, op2) => op1 - op2,
             "*" => (op1, op2) => op1 * op2,
-            "/" => (op1, op2) => op1 / op2,
+            "/" => (op1, op2) =>
+            {
+                if(op2 == 0)
+                    throw new DivideByZeroException("Cannot divide by zero");
+                return op1 / op2;
+            }
         };
     }
 
